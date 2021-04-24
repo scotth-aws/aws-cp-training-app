@@ -40,7 +40,7 @@ def process_event(event):
         print("Unable to parse request ", format(e))
 
     try:
-        random_number = random.randint(1, 4)
+        random_number = random.randint(1, 10)
         
         dbresponse = table.query(
             KeyConditionExpression=Key('PK').eq(str(random_number)) & Key('SK').eq(str(random_number))
