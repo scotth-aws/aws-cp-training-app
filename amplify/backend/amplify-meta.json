@@ -11,5 +11,6 @@
       "StackId": "arn:aws:cloudformation:us-east-1:994542504715:stack/amplify-awsreactcptraining-dev-80527/5d5841e0-a4f5-11eb-8e2e-12312be5d5ed",
       "AmplifyAppId": "d2xtl4d42hpjtx"
     }
-  }
+  },
+  "hosting": {}
 }
