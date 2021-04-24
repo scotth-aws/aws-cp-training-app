@@ -36,14 +36,19 @@ def process_event(event):
                     event["queryStringParameters"]["category"]
                 )
                 print("category ", category)
+            if "question" in event["queryStringParameters"]:
+                question = urllib.parse.unquote_plus(
+                    event["queryStringParameters"]["question"]
+                )
+                print("question ", question)
     except Exception as e:
         print("Unable to parse request ", format(e))
 
     try:
-        random_number = random.randint(1, 10)
+        #random_number = random.randint(1, 20)
         
         dbresponse = table.query(
-            KeyConditionExpression=Key('PK').eq(str(random_number)) & Key('SK').eq(str(random_number))
+            KeyConditionExpression=Key('PK').eq(str(question)) & Key('SK').eq(str(question))
         )
     except Exception as e:
         print("Unable to retrieve data from DynamoDB table", format(e))
