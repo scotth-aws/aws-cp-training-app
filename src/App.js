@@ -222,7 +222,7 @@ class App extends Component {
                 }}
                 onFinish={() => {
                   console.log('Triggered when the timer finishes')
-                  alert('Did you read the study material ;-)');
+                  alert('Did you read the study material for this week? ;-)');
                 }}
                 onReset={(remainingDuration) => {
                   console.log('Triggered when the timer is reset', remainingDuration)
