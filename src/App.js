@@ -5,7 +5,8 @@ import React, { Component } from "react";
 import logo from './aws-uni-green.png';
 import styled, { css } from 'styled-components';
 import Amplify, { API } from "aws-amplify";
-import { JsonToTable } from "react-json-to-table";
+import { Timer } from 'react-countdown-clock-timer';
+import uuid from 'react-uuid'
 
 const TAG = 'CPTraining';
 const Button = styled.button`
@@ -26,10 +27,15 @@ const AnswerButton = styled.button`
   margin: 10px 0px;
   cursor: pointer;
 `;
+
+
+
+
 const partnerCompany = 'SHI'
 const partnerChampion = "Todd"
 var ranNums;
 var ranNumsIndex = 1;
+var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 Amplify.configure({
 
   API: {
@@ -54,6 +60,8 @@ class App extends Component {
       correct_answers: [],
       rendered_answers: [],
       isQuestionRendered: false,
+      timerIsPaused: true,
+      timerId: uuid(),
 
 
 
@@ -66,7 +74,7 @@ class App extends Component {
   }
   componentDidMount() {
     console.log(TAG, this.state.category);
-    ranNums = this._shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+    ranNums = this._shuffle(qArray);
     console.log(TAG, '_getAQuestion ' + ranNums);
   }
   _getRandomItem(arr) {
@@ -103,25 +111,26 @@ class App extends Component {
   }
   _handleAnswerClick = async () => {
     console.log(TAG, '_handleAnswerClick ');
-    this.setState({ rendered_answers: this.state.correct_answers });
+    this.setState({ timerIsPaused: true, rendered_answers: this.state.correct_answers });
+
   }
 
   _getAQuestion = async (category) => {
-
+    this.setState({ timerId: uuid() });
     var q = ranNums[ranNumsIndex];
     console.log(TAG, '_getAQuestion ranNumsIndex ' + ranNumsIndex);
     ranNumsIndex += 1;
-    if (ranNumsIndex === 20)
+    if (ranNumsIndex === 30)
       ranNumsIndex = 1;
-      ranNums = this._shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+    ranNums = this._shuffle(qArray);
 
     const apiName = 'CPTraining';
     const path = "/";
-    const myInit = { // OPTIONAL
+    const myInit = {
       headers: {
         "x-api-key": "UNl0WiO9Hq6UFZNfCGnwy7Temym0P4Fv4L8ypFcn",
       },
-      queryStringParameters: {  // OPTIONAL
+      queryStringParameters: {
         question: q,
         category: 'Technology',
       },
@@ -148,7 +157,7 @@ class App extends Component {
 
     }
     console.log(answers);
-    this.setState({ question: question, answers: answers, category: category, correct_answers: correct_answers, isQuestionRendered: true });
+    this.setState({ timerIsPaused: false, question: question, answers: answers, category: category, correct_answers: correct_answers, isQuestionRendered: true });
 
 
 
@@ -192,7 +201,37 @@ class App extends Component {
                   return <li className="li">{item}</li>;
                 })}
               </ul>
+            </div>
+            <div className="timer" id="timer">
+              <Timer
+                durationInSeconds={60}
+                formatted={true}
+                isPaused={this.state.timerIsPaused}
+                showPauseButton={false}
+                showResetButton={false}
+                timerId={this.state.timerId}
 
+                onStart={() => {
+                  console.log('Triggered when the timer starts')
+                  //alert('onStart');
+                }}
+                onPause={(remainingDuration) => {
+                  console.log('Triggered when the timer is paused', remainingDuration)
+                  //alert('onPause');
+                  
+                }}
+                onFinish={() => {
+                  console.log('Triggered when the timer finishes')
+                  alert('Did you read the study material ;-)');
+                }}
+                onReset={(remainingDuration) => {
+                  console.log('Triggered when the timer is reset', remainingDuration)
+                  //alert('onReset');
+                }}
+                onResume={(remainingDuration) => {
+                  console.log('Triggered when the timer is resumed', remainingDuration)
+                }}
+              />
             </div>
 
             <div className="AnswerButton">
