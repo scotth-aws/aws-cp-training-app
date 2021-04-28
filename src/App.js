@@ -120,9 +120,9 @@ class App extends Component {
     var q = ranNums[ranNumsIndex];
     console.log(TAG, '_getAQuestion ranNumsIndex ' + ranNumsIndex);
     ranNumsIndex += 1;
-    if (ranNumsIndex === 30)
+    if (ranNumsIndex === 50)
       ranNumsIndex = 1;
-    ranNums = this._shuffle(qArray);
+      ranNums = this._shuffle(qArray);
 
     const apiName = 'CPTraining';
     const path = "/";
