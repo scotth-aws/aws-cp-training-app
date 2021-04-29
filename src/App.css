@@ -2,6 +2,33 @@
   text-align: center;
 
 }
+.modal {
+  Position: fixed;
+  left: 0;
+  top: 20;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.modal-content {
+  width: 350px;
+  background-color: white;
+}
+.modal-header, .modal-footer {
+  padding: 10px;
+}
+modal-title {
+  margin: 0;
+}
+.modal-body {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee
+}
 
 .Button {
   text-align: center;
@@ -43,13 +70,20 @@
   }
 }
 
+.header {
+  height:5vh;
+}
+.content {
+  height:95vh;
+}
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: white;
+  min-height: 10vh;
+  height: 10vmin;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -60,15 +94,15 @@
 
 .columnL {
   float: left;
-  width: 30%;
+  width: 20%;
   padding: 10px;
-  background-color: lightgray;
+  background-color: white;
   height: 800px;  
   
 }
 .columnR {
   float: left;
-  width: 70%;
+  width: 80%;
   padding: 10px;
   background-color: white;
   height: 800px;  
