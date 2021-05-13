@@ -2,7 +2,8 @@ import React from 'react';
 import { Timer } from 'react-countdown-clock-timer';
 import uuid from 'react-uuid'
 import logo from './aws-uni-green.png';
-import styled, {  } from 'styled-components';
+import awslogo from './aws-logo-spinning.gif';
+import styled, { } from 'styled-components';
 import Amplify, { API } from "aws-amplify";
 
 
@@ -18,8 +19,9 @@ const AnswerButton = styled.button`
 const TAG = 'Content';
 
 var ranNums;
-var ranNumsIndex = 1;
-var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86];
+var ranNumsIndex = 0;
+//var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86];
+var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 Amplify.configure({
 
   API: {
@@ -43,9 +45,13 @@ class Content extends React.Component {
       answers: [],
       correct_answers: [],
       rendered_answers: [],
+      doclink: '',
+      rendered_doclink: '',
+      doclinkTitle: '',
       isQuestionRendered: false,
       timerIsPaused: true,
       timerId: uuid(),
+      isReady: false,
 
 
 
@@ -89,27 +95,29 @@ class Content extends React.Component {
   }
   _run = async (supplier, productid) => {
     console.log(TAG, '_run ');
-    this.setState({ rendered_answers: [] });
-    this._getAQuestion();
+    this.setState({ rendered_answers: [], rendered_doclink: '', doclinkTitle: '' });
+    this._getAQuestion("");
   }
   _handleAnswerClick = async () => {
     console.log(TAG, '_handleAnswerClick ');
-    this.setState({ timerIsPaused: true, rendered_answers: this.state.correct_answers });
+    this.setState({ timerIsPaused: true, rendered_answers: this.state.correct_answers, rendered_doclink: this.state.doclink, doclinkTitle: 'see aws doc here' });
 
   }
 
-  _getAQuestion = async (category) => {
+  _getAQuestion = async (selectedCategory) => {
 
-    this.setState({ timerId: uuid() });
-    var q = ranNums[ranNumsIndex];
-    console.log(TAG, '_getAQuestion ranNumsIndex ' + ranNumsIndex);
+    this.setState({ timerId: uuid(), isReady: true });
+    var qidx = ranNums[ranNumsIndex];
+    console.log(TAG, '_getAQuestion ranNumsIndex ' + qidx);
+
     ranNumsIndex += 1;
-    if (ranNumsIndex === 86) {
+    if (ranNumsIndex === 11) {
       alert('You have reached the end of the questions. What do you think your score is? 🤯')
       ranNumsIndex = 1;
       ranNums = this._shuffle(qArray);
-      q = ranNums[ranNumsIndex];
+      qidx = ranNums[ranNumsIndex];
     }
+
 
     const apiName = 'CPTraining';
     const path = "/";
@@ -118,8 +126,8 @@ class Content extends React.Component {
         "x-api-key": "UNl0WiO9Hq6UFZNfCGnwy7Temym0P4Fv4L8ypFcn",
       },
       queryStringParameters: {
-        question: q,
-        category: 'Technology',
+        question: qidx,
+        category: selectedCategory,
       },
     };
     var data = '';
@@ -134,6 +142,7 @@ class Content extends React.Component {
     var answers = [];
     var category = '';
     var correct_answers = [];
+    var doclink = '';
 
     for (var i = 0; i < data.length; i++) {
       question = data[i].question;
@@ -141,92 +150,145 @@ class Content extends React.Component {
       answers = data[i].answers;
       category = data[i].category;
       correct_answers = data[i].correct_answers;
+      doclink = data[i].doclink;
 
     }
     console.log(answers);
-    this.setState({ timerIsPaused: false, question: question, answers: answers, category: category, correct_answers: correct_answers, isQuestionRendered: true });
+    this.setState({ timerIsPaused: false, question: question, doclink: doclink, answers: answers, category: category, correct_answers: correct_answers, isQuestionRendered: true });
 
   };
   render() {
     let answerButton;
-    console.log(this.state.isQuestionRendered);
+    //console.log(this.state.isQuestionRendered + this.state.rendered_doclink);
+
     if (this.state.isQuestionRendered) {
       answerButton = <AnswerButton onClick={this._handleAnswerClick}>Answer</AnswerButton>;
     } else {
       answerButton = <h3></h3>;
     }
-    return (
-      <div className="rowC">
-      <div className="columnL">
-        <h3>Cloud Practitioner Training</h3>
-        <img src={logo} className="App-static-logo" alt="logo" onClick={this._run}/>
+    if (this.state.isReady) {
+      return (
+        <div className="rowC">
+          <div className="columnL">
+
+            <img src={logo} height="100px" width="100px" className="App-static-logo" alt="logo" onClick={this._run} />
 
 
-      </div>
+          </div>
 
-      <div className="columnR">
-        <div className="question" id="question">
-          {this.state.question}
+          <div className="columnR">
+            <div className="question" id="question">
+              {this.state.question}
+            </div>
+            <div className="answers" id="answers">
+              <ul>
+                {this.state.answers.map(item => {
+                  return <li className="li">{item}</li>;
+                })}
+              </ul>
+            </div>
+            <div className="timer" id="timer">
+              <Timer
+                durationInSeconds={60}
+                formatted={true}
+                isPaused={this.state.timerIsPaused}
+                showPauseButton={false}
+                showResetButton={false}
+                timerId={this.state.timerId}
+
+                onStart={() => {
+                  console.log('Triggered when the timer starts')
+                  //alert('onStart');
+                }}
+                onPause={(remainingDuration) => {
+                  console.log('Triggered when the timer is paused', remainingDuration)
+                  //alert('onPause');
+
+                }}
+                onFinish={() => {
+                  console.log('Triggered when the timer finishes')
+                  alert('Errrr, did you read the study material for this week? 😉');
+
+                }}
+                onReset={(remainingDuration) => {
+                  console.log('Triggered when the timer is reset', remainingDuration)
+                  //alert('onReset');
+                }}
+                onResume={(remainingDuration) => {
+                  console.log('Triggered when the timer is resumed', remainingDuration)
+                }}
+              />
+            </div>
+
+            <div className="AnswerButton">
+              {answerButton}
+            </div>
+
+            <div className="correct_answers" id="correct_answers">
+              <ul>
+                {this.state.rendered_answers.map(item => {
+                  return <li className="li">{item}</li>;
+                })}
+              </ul>
+              <ul><a href={this.state.rendered_doclink} target="_blank">{this.state.doclinkTitle}</a></ul>
+
+            </div>
+
+
+
+          </div>
+
         </div>
-        <div className="answers" id="answers">
-          <ul>
-            {this.state.answers.map(item => {
-              return <li className="li">{item}</li>;
-            })}
-          </ul>
-        </div>
-        <div className="timer" id="timer">
-          <Timer
-            durationInSeconds={60}
-            formatted={true}
-            isPaused={this.state.timerIsPaused}
-            showPauseButton={false}
-            showResetButton={false}
-            timerId={this.state.timerId}
 
-            onStart={() => {
-              console.log('Triggered when the timer starts')
-              //alert('onStart');
-            }}
-            onPause={(remainingDuration) => {
-              console.log('Triggered when the timer is paused', remainingDuration)
-              //alert('onPause');
+      );
+    } else {
+      return (
+        <div className="rowC">
+          <div className="columnL">
 
-            }}
-            onFinish={() => {
-              console.log('Triggered when the timer finishes')
-              alert('Errrr, did you read the study material for this week? 😉');
+            <img src={logo} height="100px" width="100px" className="App-static-logo" alt="logo" onClick={this._run} />
 
-            }}
-            onReset={(remainingDuration) => {
-              console.log('Triggered when the timer is reset', remainingDuration)
-              //alert('onReset');
-            }}
-            onResume={(remainingDuration) => {
-              console.log('Triggered when the timer is resumed', remainingDuration)
-            }}
-          />
-        </div>
 
-        <div className="AnswerButton">
-          {answerButton}
-        </div>
+          </div>
 
-        <div className="correct_answers" id="correct_answers">
-          <ul>
-            {this.state.rendered_answers.map(item => {
-              return <li className="li">{item}</li>;
-            })}
-          </ul>
+          <div className="columnR">
+            <div className="question" id="question">
+              {this.state.question}
+            </div>
+            <div className="answers" id="answers">
+              <ul>
+                {this.state.answers.map(item => {
+                  return <li className="li">{item}</li>;
+                })}
+              </ul>
+            </div>
+            <img src={awslogo} height="200px" width="200px" className="App-static-logo" alt="logo" onClick={this._run} />
+
+
+           
+            <div className="AnswerButton">
+              {answerButton}
+            </div>
+
+            <div className="correct_answers" id="correct_answers">
+              <ul>
+                {this.state.rendered_answers.map(item => {
+                  return <li className="li">{item}</li>;
+                })}
+              </ul>
+              <ul><a href={this.state.rendered_doclink} target="_blank">{this.state.doclinkTitle}</a></ul>
+
+            </div>
+
+
+
+          </div>
 
         </div>
 
+      );
 
-
-      </div>
-
-    </div>
-    );
+    }
   }
 }
 export default Content;

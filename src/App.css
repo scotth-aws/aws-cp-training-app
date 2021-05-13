@@ -1,14 +1,15 @@
 .App {
   text-align: center;
+  background-color: lightgray;
 
 }
 .modal {
   Position: fixed;
   left: 0;
-  top: 20;
+  top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0,0,0.5);
+  background-color: lightgray;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,18 +17,21 @@
 }
 .modal-content {
   width: 350px;
-  background-color: white;
+  background-color: lightgray;
 }
 .modal-header, .modal-footer {
   padding: 10px;
+  background-color: lightgray;
 }
 modal-title {
   margin: 0;
+  background-color: lightgray;
 }
 .modal-body {
   padding: 10px;
   border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee
+  border-bottom: 1px solid #eee;
+  background-color: lightgray;
 }
 
 .Button {
@@ -47,12 +51,12 @@ modal-title {
 }
 .answers {
   text-align: left;
-  padding: 30px;
+  padding: 10px;
 
 }
 .correct_answers {
   text-align: left;
-  padding: 30px;
+  padding: 10px;
   color: green;
   font-weight: bold;
   font-family:Georgia, 'Times New Roman', Times, serif;
@@ -71,38 +75,56 @@ modal-title {
 }
 
 .header {
-  height:5vh;
+  height:10vh;
+  background-color: lightgray;
 }
 .content {
   height:95vh;
 }
 .App-header {
-  background-color: white;
-  min-height: 10vh;
-  height: 10vmin;
+  background-color: lightgray;
   display: flex;
-  flex-direction: row;
-  align-items: left;
-  justify-content: left;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  justify-content: center;
+ 
+
 }
 
 .App-link {
   color: #61dafb;
 }
-
+.rowL {
+  float: left;
+  width: 15%;
+  padding: 10px;
+  background-color: lightgray;
+  
+  
+}
+.rowR {
+  float: left;
+  width: 85%;
+  padding: 10px;
+  background-color: lightgray;
+  font-weight: bold;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  
+  
+}
+.headerTitle {
+  color: rgb(12, 11, 12);
+}
 .columnL {
   float: left;
-  width: 20%;
+  width: 15%;
   padding: 10px;
-  background-color: white;
+  background-color: lightgray;
   height: 800px;  
   
 }
 .columnR {
   float: left;
-  width: 80%;
+  width: 85%;
   padding: 10px;
   background-color: white;
   height: 800px;  
@@ -124,7 +146,7 @@ modal-title {
 }
 .question {
   text-align: center;
-  padding: 30px;
+  padding: 10px;
   color: black;
   font-weight: bold;
   font-family:Georgia, 'Times New Roman', Times, serif;

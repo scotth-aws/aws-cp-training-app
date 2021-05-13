@@ -17,7 +17,7 @@ class DecimalEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-TABLE_NAME = "cp-training-questions"
+TABLE_NAME = "cp-aws-training-questions"
 
 
 def process_event(event):

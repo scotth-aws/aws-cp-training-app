@@ -9,9 +9,7 @@ const ConfigButton = styled.button`
   width: 35px;
   height: 35px;
   font-size: 10px;
-  padding: 10px 10px 10px 10px;
   border-radius: 5px;
-  margin: 10px 10px;
   cursor: pointer;
 `;
 class Header extends React.Component {
@@ -33,8 +31,14 @@ class Header extends React.Component {
     render() {
         return (
             <div className="App-header">
+                <div className="rowL">
                 <ConfigButton onClick={this._config}>
                 </ConfigButton>
+                </div>
+                <div className="rowR">
+                
+                <h3 className="headerTitle">Cloud Practitioner Training</h3>
+                </div>
             </div>
         );
     }

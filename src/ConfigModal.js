@@ -11,8 +11,8 @@ const ConfigModal = props => {
                     <h4 clasName="modal-title">App config</h4>
                 </div>
                 <div clasName="modal-body">
+                    <p>Enter Partner's name:</p>
                     <form>
-                        <p>Enter Partner's name:</p>
                         <input
                             type="text"
                             onChange={props._companyChangeHandler}
