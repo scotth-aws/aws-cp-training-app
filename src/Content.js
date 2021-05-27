@@ -5,6 +5,8 @@ import logo from './aws-uni-green.png';
 import awslogo from './aws-logo-spinning.gif';
 import styled, { } from 'styled-components';
 import Amplify, { API } from "aws-amplify";
+import Parser from 'html-react-parser';
+
 
 
 const AnswerButton = styled.button`
@@ -21,7 +23,7 @@ const TAG = 'Content';
 var ranNums;
 var ranNumsIndex = 0;
 //var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86];
-var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+var qArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40];
 Amplify.configure({
 
   API: {
@@ -111,7 +113,7 @@ class Content extends React.Component {
     console.log(TAG, '_getAQuestion ranNumsIndex ' + qidx);
 
     ranNumsIndex += 1;
-    if (ranNumsIndex === 21) {
+    if (ranNumsIndex === 41) {
       alert('You have reached the end of the questions. What do you think your score is? 🤯')
       ranNumsIndex = 1;
       ranNums = this._shuffle(qArray);
@@ -147,6 +149,8 @@ class Content extends React.Component {
     for (var i = 0; i < data.length; i++) {
       question = data[i].question;
       question = question.replace("%Company%", this.props.company);
+      question = question.replace(/%start%/g, " <span style=\"color: #ff0000\">");
+      question = question.replace(/%end%/g, " </span>");
       answers = data[i].answers;
       category = data[i].category;
       correct_answers = data[i].correct_answers;
@@ -178,7 +182,7 @@ class Content extends React.Component {
 
           <div className="columnR">
             <div className="question" id="question">
-              {this.state.question}
+              {Parser(this.state.question)}
             </div>
             <div className="answers" id="answers">
               <ul>
@@ -253,7 +257,7 @@ class Content extends React.Component {
 
           <div className="columnR">
             <div className="question" id="question">
-              {this.state.question}
+            {this.state.question}
             </div>
             <div className="answers" id="answers">
               <ul>
